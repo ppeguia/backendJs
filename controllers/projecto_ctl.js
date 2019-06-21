@@ -46,7 +46,7 @@ var controller = {
 		});
 	},
 	getProyectos: function(req, res){
-		Proyecto.find({"nombre":jose}).sort('anio').exec((err, projectosStored)=>{
+		Proyecto.find({"nombre":'jose'}).sort('anio').exec((err, projectosStored)=>{
 			if(err) return res.status(500).send({ message: "Error al obtener los proyectos "});
 			if(!projectosStored) return res.status(404).send({ message: "No hay proyectos"});
 			return res.status(200).send({ proyectos: projectosStored,
