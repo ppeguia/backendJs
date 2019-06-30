@@ -19,7 +19,7 @@ const config = {
   useNewUrlParser: true,
 };
 
-return mongoose.connect('mongodb+srv://dbUser:Tulia100111@clusterhl-xeyyb.mongodb.net/portafolio?retryWrites=true&w=majority', { useNewUrlParser: true })
+return mongoose.connect('mongodb+srv://dbUser:Jose1234@clusterhl-xeyyb.mongodb.net/portafolio?retryWrites=true&w=majority', { useNewUrlParser: true })
 				.then(() =>{
 					console.log("conexion a la base de datos establecida con exito ...");
 					//Creacion del servidor
