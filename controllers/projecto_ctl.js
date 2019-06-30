@@ -2,7 +2,7 @@
 
 var Proyecto = require('../models/proyecto'); 
 var fs = require('fs');
-
+var path = require('path');
 var controller = {
 	
 	home: function(req, res){
@@ -46,7 +46,8 @@ var controller = {
 		});
 	},
 	getProyectos: function(req, res){
-		Proyecto.find({"nombre":'jose'}).sort('anio').exec((err, projectosStored)=>{
+		//Proyecto.find({"nombre":'jose'}).sort('anio').exec((err, projectosStored)=>{
+		Proyecto.find().sort('anio').exec((err, projectosStored)=>{
 			if(err) return res.status(500).send({ message: "Error al obtener los proyectos "});
 			if(!projectosStored) return res.status(404).send({ message: "No hay proyectos"});
 			return res.status(200).send({ proyectos: projectosStored,
@@ -82,13 +83,15 @@ var controller = {
 
 		if(req.files){
 			var filePath = req.files.imagen.path;
-			var fileSplit = filePath.split('/');
+			var fileSplit = filePath.split('\\');
 
 			fileName = fileSplit[1];
-
+			
 			var extSplit = fileName.split('.');
 			var fileExt = extSplit[1];
-
+			debugger;
+			console.log("extSplit: " + extSplit);
+			console.log("fileExt: " + fileExt);
 			if(fileExt == 'png' || fileExt == 'jpg' || fileExt == 'jpeg' || fileExt == 'gif' ){
 				Proyecto.findByIdAndUpdate(proyectoId,{ imagen: fileName }, {new: true}, (err, projectoStored)=>{
 					if(err) return res.status(500).send({ message: "No se ha podido cargar la imagen al proyecot: " + proyectoId });
@@ -110,8 +113,21 @@ var controller = {
 				message: fileName
 			});
 		}
-
+	},
+	getImagFile: function(req, res){
+		var image = req.params.image;
+		var path_file = "./uploads/"+ image;
+		fs.exists(path_file,(exists)=>{
+			if(exists){
+				return res.sendFile(path.resolve(path_file));
+			}else{
+				return res.status(200).send({
+					message: "No existe la imagen"
+				});
+			}
+		});
 	}
+
 };
 
 module.exports = controller;
